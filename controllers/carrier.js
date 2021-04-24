@@ -3,56 +3,36 @@ var axios = require('axios');
 var Carrier = require('../models/Carriers');
 
 function dataTransaction(req, res){
-  //console.log(req.body);
-  //console.log(req.file);
-	/*serviceInit(req, function(data, err) {
-        if (err) {
-            res.status(500).send({ message: 'Error en la petición' });
-        }else {
-        	var res = data;
-        }
-    });*/
-    var carrier = new Carrier();
-    carrier.map = req.body.map
-    carrier.id = req.body.id;
-    carrier.fId = req.body.fId;
-    carrier.date = req.body.date;
-    carrier.image = req.file.filename;
-    carrier.description = req.body.description;
-    carrier.type = req.body.type;
-    carrier.permitions = req.body.permitions;
-    carrier.save((err, carrierStored) => {
-      if(err) {
-        res.status(500).send({ message: 'Error al guardar los datos' });
+  var carrier = new Carrier();
+  carrier.fid = req.body.fid;
+  carrier.ubication = req.body.ubication;
+  carrier.name = req.body.name;
+  carrier.previousStage = req.body.previousStage;
+  carrier.currentStage = req.body.currentStage;
+  carrier.save((err, carrierStored) => {
+    if(err) {
+      res.status(500).send({ message: 'Error al guardar los datos' });
+    }else{
+      if(!carrierStored) {
+        res.status(404).send({ message: 'El dato no ha sido guardado' });
       }else{
-        if(!carrierStored) {
-          res.status(404).send({ message: 'El dato no ha sido guardado' });
-        }else{
-          res.status(200).send({ message: true });
-        }
+        serviceInit(carrierStored, function(data, err) {
+          res.status(200).send({ message: data.message, addData: data.addData });
+        });
       }
-    });
+    }
+  });
 }
 
-function serviceInit(req, next) {
-    var map = req.body.map; //Latitud y longitud de dos puntos (origen y destino)
-    var id = req.body.id;
-    var fId = req.body.fId;
-    var date = req.body.date;
-    var image = req.file.filename;
-    var description = req.body.description;
-    var type = req.body.type;
-    var permitions = req.body.permitions;
-    var url = 'http://'+host+':'+port.audit+''+path.audit+'';
+function serviceInit(carrierStored, next) {
+    var url = 'http://'+host+':'+port.traceability+''+path.traceability+'';
     axios.post(url, {
-        map: map,
-        id: id,
-        fId: fId,
-        date: date,
-        image: image,
-        description: description,
-        type: type,
-        permitions: permitions
+      id: carrierStored._id,
+      fid: carrierStored.fid,
+      ubication: carrierStored.ubication,
+      name: carrierStored.name,
+      previousStage: carrierStored.previousStage,
+      currentStage: carrierStored.currentStage
     })
     .then(response => {
         //console.log(response.data);
