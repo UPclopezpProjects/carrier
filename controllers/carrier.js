@@ -12,6 +12,7 @@ function dataTransaction(req, res){
   carrier.currentStage = req.body.currentStage;
   carrier.nameOfCompany = req.body.nameOfCompany;
   carrier.image = req.body.image;
+  carrier.description = req.body.description;
   carrier.save((err, carrierStored) => {
     if(err) {
       res.status(500).send({ message: 'Error al guardar los datos' });
@@ -36,7 +37,8 @@ function serviceInit(carrierStored, next) {
       name: carrierStored.name,
       previousStage: carrierStored.previousStage,
       currentStage: carrierStored.currentStage,
-      image: carrierStored.image
+      image: carrierStored.image,
+      description: carrierStored.description
     })
     .then(response => {
         //console.log(response.data);
