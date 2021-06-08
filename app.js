@@ -80,5 +80,4 @@ app.use((req, res, next) => {
 //app.use('/api', user_routes);
 app.use('/', carrier_routes);
 
-
 module.exports = app;
