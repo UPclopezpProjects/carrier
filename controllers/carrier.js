@@ -6,6 +6,7 @@ var User = require('../models/Users');
 function dataTransaction(req, res){
   var carrier = new Carrier();
   carrier.fid = req.body.fid;
+  carrier.code = req.body.code;
   carrier.ubication = req.body.ubication;
   carrier.name = req.body.name;
   carrier.previousStage = req.body.previousStage;
@@ -33,6 +34,7 @@ function serviceInit(carrierStored, next) {
     axios.post(url, {
       id: carrierStored._id,
       fid: carrierStored.fid,
+      code: carrierStored.code,
       ubication: carrierStored.ubication,
       name: carrierStored.name,
       previousStage: carrierStored.previousStage,
