@@ -4,6 +4,8 @@ var Carrier = require('../models/Carriers');
 var User = require('../models/Users');
 
 function dataTransaction(req, res){
+  console.log(req.files);
+  console.log(req.body);
   var carrier = new Carrier();
   carrier.fid = req.body.fid;
   carrier.code = req.body.code;
@@ -14,6 +16,13 @@ function dataTransaction(req, res){
   carrier.nameOfCompany = req.body.nameOfCompany;
   carrier.image = req.body.image;
   carrier.description = req.body.description;
+  carrier.driverName = req.body.driverName;
+  carrier.origin = req.body.origin;
+  carrier.destination = req.body.origin;
+  carrier.plates = req.body.plates;
+  carrier.productPhotos = req.body.productPhotos;
+  carrier.vehiclePhotos = req.body.vehiclePhotos;
+  carrier.tracking = req.body.tracking;
   carrier.save((err, carrierStored) => {
     if(err) {
       res.status(500).send({ message: 'Error al guardar los datos' });
@@ -97,9 +106,29 @@ function getData(req, res) {
   });
 }
 
+function getHistory(req, res) {
+  var history = [];
+  var query = { nameOfCompany: req.query.nameOfCompany.replace(/[$]+/g, ' ') };
+  Carrier.find(query, (err, dataStored) => {
+    if(err){
+      res.status(500).send({ message: 'Error en la petición' });
+    }else{
+      if(!dataStored){
+        res.status(200).send({ history: null });
+      }else{
+        for(var data of dataStored){
+          history.push(data);
+        }
+        res.status(200).send({ history: history });
+      }
+    }
+  });
+}
+
 module.exports = {
 	dataTransaction,
   dataOfCompany,
   getCompany,
-  getData
+  getData,
+  getHistory
 };

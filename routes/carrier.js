@@ -9,5 +9,6 @@ router.post('/carriersData', CarrierController.dataTransaction);
 router.post('/dataOfCompany', CarrierController.dataOfCompany);
 router.get('/getData', CarrierController.getData);
 router.post('/getCompany', CarrierController.getCompany);
+router.get('/getHistory', CarrierController.getHistory);
 
 module.exports = router;

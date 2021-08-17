@@ -10,7 +10,14 @@ var CarrierSchema = new Schema({
   currentStage: {type: String, required: true, max: 100},
   nameOfCompany: {type: String, required: true, max: 100},
   image: {type: String, required: true, max: 100},
-  description: {type: String, required: true, max: 100}
+  description: {type: String, required: true, max: 100},
+  driverName: {type: String, required: true, max: 100},
+  origin: {type: String, required: true, max: 100},
+  destination: {type: String, required: true, max: 100},
+  plates: {type: String, required: true, max: 100},
+  productPhotos: {type: String, required: true, max: 100},
+  vehiclePhotos: {type: String, required: true, max: 100},
+  tracking: {type: String, required: true, max: 100}
 });
 
 module.exports = mongoose.model('Carrier', CarrierSchema);
